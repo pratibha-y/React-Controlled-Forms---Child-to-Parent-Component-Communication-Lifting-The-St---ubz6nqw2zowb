@@ -1,27 +1,15 @@
 import './styles/App.css';
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 function App() {
   const [text, setText] = useState('');
-  const [radio, setRadio] = useState('');
+  const [radio, setRadio] = useState('1');
   const [checkbox, setCheckbox] = useState([false, false, false]);
 
-  const handleTextChange = (event) => {
-    setText(event.target.value);
-  };
-
-  const handleRadioChange = (event) => {
-    setRadio(event.target.value);
-  };
-
-  const handleCheckboxChange = (event) => {
-    const index = parseInt(event.target.value) - 1;
-    setCheckbox((prevCheckbox) => {
-      const newCheckbox = [...prevCheckbox];
-      newCheckbox[index] = !prevCheckbox[index];
-      return newCheckbox;
-    });
+  const checkboxHandle = e => {
+    const idx = e.target.value - 1;
+    const arr = checkbox.map((el, i) => (i == idx ? !el : el));
+    setCheckbox(arr);
   };
 
   return (
@@ -40,8 +28,9 @@ function App() {
               rows="3"
               name="text"
               value={text}
-              onChange={handleTextChange}
-            ></textarea>
+              onChange={e => {
+                setText(e.target.value);
+              }}></textarea>
             <label className="form-check-label" htmlFor="radio">
               Default radio
             </label>
@@ -53,9 +42,13 @@ function App() {
                 id="radio1"
                 name="radio"
                 checked={radio === '1'}
-                onChange={handleRadioChange}
+                onChange={e => {
+                  setRadio(e.target.value);
+                }}
               />
-              <label className="form-check-label" htmlFor="radio1">
+              <label
+                className="form-check-label"
+                htmlFor="radio1">
                 Radio 1
               </label>
             </div>
@@ -67,9 +60,13 @@ function App() {
                 id="radio2"
                 name="radio"
                 checked={radio === '2'}
-                onChange={handleRadioChange}
+                onChange={e => {
+                  setRadio(e.target.value);
+                }}
               />
-              <label className="form-check-label" htmlFor="radio2">
+              <label
+                className="form-check-label"
+                htmlFor="radio2">
                 Radio 2
               </label>
             </div>
@@ -81,9 +78,13 @@ function App() {
                 id="radio3"
                 name="radio"
                 checked={radio === '3'}
-                onChange={handleRadioChange}
+                onChange={e => {
+                  setRadio(e.target.value);
+                }}
               />
-              <label className="form-check-label" htmlFor="radio3">
+              <label
+                className="form-check-label"
+                htmlFor="radio3">
                 Radio 3
               </label>
             </div>
@@ -98,9 +99,11 @@ function App() {
                 id="checkbox1"
                 name="checkbox"
                 checked={checkbox[0]}
-                onChange={handleCheckboxChange}
+                onChange={checkboxHandle}
               />
-              <label className="form-check-label" htmlFor="checkbox1">
+              <label
+                className="form-check-label"
+                htmlFor="checkbox1">
                 Checkbox 1
               </label>
             </div>
@@ -112,16 +115,27 @@ function App() {
                 id="checkbox2"
                 name="checkbox"
                 checked={checkbox[1]}
-                onChange={handleCheckboxChange}
+                onChange={checkboxHandle}
               />
-              <label className="form-check-label" htmlFor="checkbox2">
+              <label
+                className="form-check-label"
+                htmlFor="checkbox2">
                 Checkbox 2
               </label>
             </div>
-             <div className="form-check">
-              <input className="form-check-input" type="checkbox" value="3" id="checkbox3" name="checkbox" checked={checkbox[2]} onChange={handleCheckboxChange}
-/>
-              <label className="form-check-label" htmlFor="checkbox3">
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value="3"
+                id="checkbox3"
+                name="checkbox"
+                checked={checkbox[2]}
+                onChange={checkboxHandle}
+              />
+              <label
+                className="form-check-label"
+                htmlFor="checkbox3">
                 Checkbox 3
               </label>
             </div>
@@ -130,13 +144,16 @@ function App() {
         <div className="col md-6">
           <h3>Form Output</h3>
           <p className="text">
-            <span className="title">Text : </span>{text}
+            <span className="title">Text : </span>
+            {text}
           </p>
           <p className="radio">
-            <span className="title">Radio : </span>{radio}
+            <span className="title">Radio : </span>
+            {radio}
           </p>
           <p className="checkbox">
-            <span className="title">Checkbox : </span> {`[ `}{checkbox.join(", ")}
+            <span className="title">Checkbox : </span> {`[ `}
+            {checkbox.map((x, i) => (x ? `${i + 1}, ` : ''))}
             {`]`}
           </p>
         </div>
